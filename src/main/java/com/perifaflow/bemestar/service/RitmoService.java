@@ -13,10 +13,10 @@ public class RitmoService {
 
     @Transactional
     public void registrar(RitmoRegistroDTO dto){
-        if (!dto.optIn()) return; // sem opt-in, não persistimos nada
+        if (!dto.optIn()) return;
         RitmoEvent ev = RitmoEvent.builder()
                 .bairro(dto.bairro())
-                .turno(dto.turno())
+                .turno(com.perifaflow.bemestar.domain.Turno.valueOf(dto.turno()))
                 .energia(dto.energia())
                 .ambiente(dto.ambiente())
                 .condicao(dto.condicao())
