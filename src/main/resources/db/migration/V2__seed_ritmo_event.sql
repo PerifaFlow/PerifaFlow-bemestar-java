@@ -1,0 +1,5 @@
+INSERT INTO RITMO_EVENT (BAIRRO, TURNO, ENERGIA, AMBIENTE, CONDICAO)
+VALUES
+    ('Vila Nova','NOITE',1,2,1),
+    ('Vila Nova','TARDE',2,1,2),
+    ('Jd. São Jorge','MANHA',0,2,1);
