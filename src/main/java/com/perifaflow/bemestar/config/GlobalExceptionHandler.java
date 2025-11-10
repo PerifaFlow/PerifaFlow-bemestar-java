@@ -2,6 +2,7 @@ package com.perifaflow.bemestar.config;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,24 @@ public class GlobalExceptionHandler {
         ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         pd.setTitle("INTERNAL_ERROR");
         pd.setDetail("Algo inesperado aconteceu. Tente novamente.");
+        return pd;
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ProblemDetail handleBadJson(HttpMessageNotReadableException ex){
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pd.setTitle("INVALID_BODY");
+        pd.setDetail("JSON ausente ou inválido.");
+        return pd;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ProblemDetail handleIllegalArgument(IllegalArgumentException ex){
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pd.setTitle("INVALID_ARGUMENT");
+        pd.setDetail(ex.getMessage());
         return pd;
     }
 }
