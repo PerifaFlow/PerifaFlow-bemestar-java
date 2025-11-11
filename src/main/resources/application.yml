@@ -1,48 +1,67 @@
 spring:
-  application.name: bemestar-java
-  profiles.active: dev
+  application:
+    name: bemestar-java
+  profiles:
+    active: dev
 
-management.endpoints.web.exposure.include: health,info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
 
 ---
 spring:
-  config.activate.on-profile: dev
-  h2.console.enabled: true
-  h2.console.path: /h2-console
+  config:
+    activate:
+      on-profile: dev
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
     url: jdbc:h2:mem:bemestar;MODE=Oracle;DB_CLOSE_DELAY=-1
     username: sa
     password:
     driver-class-name: org.h2.Driver
   jpa:
-    hibernate.ddl-auto: validate
+    hibernate:
+      ddl-auto: validate
     show-sql: true
-    properties.hibernate.format_sql: true
-  flyway.locations: classpath:db/migration
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    locations: classpath:db/migration
   cache:
     type: caffeine
-caffeine:
-  spec: maximumSize=1000,expireAfterWrite=5m
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=5m
+
+springdoc:
+  paths-to-match: /v1/**
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+
 ---
 spring:
-  config.activate.on-profile: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
     url: ${ORACLE_URL}
     username: ${ORACLE_USER}
     password: ${ORACLE_PASS}
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
-    hibernate.ddl-auto: validate
+    hibernate:
+      ddl-auto: validate
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=5m
 
-    springdoc:
-      paths-to-match: /v1/**         # documenta só seus endpoints da API
-      default-consumes-media-type: application/json
-      default-produces-media-type: application/json
-
-    logging:
-      level:
-        org.springdoc: INFO          # use DEBUG se ainda der 500 para ver o stacktrace
-
-
-
-
+springdoc:
+  paths-to-match: /v1/**
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
