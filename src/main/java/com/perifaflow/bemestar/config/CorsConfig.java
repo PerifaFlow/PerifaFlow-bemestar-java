@@ -1,4 +1,3 @@
-// src/main/java/com/perifaflow/bemestar/config/CorsConfig.java
 package com.perifaflow.bemestar.config;
 
 import org.springframework.context.annotation.Bean;

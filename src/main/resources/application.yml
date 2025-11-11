@@ -7,8 +7,10 @@ management.endpoints.web.exposure.include: health,info
 ---
 spring:
   config.activate.on-profile: dev
+  h2.console.enabled: true
+  h2.console.path: /h2-console
   datasource:
-    url: jdbc:h2:mem:bemestar;MODE=Oracle
+    url: jdbc:h2:mem:bemestar;MODE=Oracle;DB_CLOSE_DELAY=-1
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -28,3 +30,16 @@ spring:
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     hibernate.ddl-auto: validate
+
+    springdoc:
+      paths-to-match: /v1/**         # documenta só seus endpoints da API
+      default-consumes-media-type: application/json
+      default-produces-media-type: application/json
+
+    logging:
+      level:
+        org.springdoc: INFO          # use DEBUG se ainda der 500 para ver o stacktrace
+
+
+
+

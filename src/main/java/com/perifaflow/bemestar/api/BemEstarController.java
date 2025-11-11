@@ -1,12 +1,18 @@
 package com.perifaflow.bemestar.api;
 
 import com.perifaflow.bemestar.api.dto.*;
+import com.perifaflow.bemestar.domain.RitmoEvent;
 import com.perifaflow.bemestar.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
 import java.util.Map;
 
 @RestController @RequestMapping("/v1")
@@ -33,4 +39,17 @@ public class BemEstarController {
     public SugestaoMissaoResponse sugerir(@RequestBody @Valid SugestaoMissaoRequest req){
         return sugestoesService.sugerir(req);
     }
+
+
+    @GetMapping("/ritmo/registros")
+    public Page<RitmoEvent> listarRegistros(
+            @RequestParam(required = false) String bairro,
+            @RequestParam(required = false) String turno,
+            @ParameterObject
+            @PageableDefault(size = 10, sort = "enviadoEm", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ){
+        return ritmoService.listar(bairro, turno, pageable);
+    }
 }
+
