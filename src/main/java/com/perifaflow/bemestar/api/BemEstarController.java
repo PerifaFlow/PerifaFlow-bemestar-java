@@ -29,10 +29,10 @@ public class BemEstarController {
     }
 
     @GetMapping("/ritmo/insights")
-    public Map<String,Object> insights(@RequestParam String bairro,
-                                       @RequestParam String de,
-                                       @RequestParam String ate){
-        return insightsService.agregados(bairro,de,ate);
+    public InsightsDTO insights(@RequestParam String bairro,
+                                @RequestParam String de,
+                                @RequestParam String ate){
+        return insightsService.agregadosDTO(bairro, de, ate);
     }
 
     @PostMapping("/sugestoes/missao")
