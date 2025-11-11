@@ -19,7 +19,10 @@ spring:
     show-sql: true
     properties.hibernate.format_sql: true
   flyway.locations: classpath:db/migration
-
+  cache:
+    type: caffeine
+caffeine:
+  spec: maximumSize=1000,expireAfterWrite=5m
 ---
 spring:
   config.activate.on-profile: prod
