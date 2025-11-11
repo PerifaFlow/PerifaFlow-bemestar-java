@@ -19,15 +19,6 @@ spring:
     show-sql: true
     properties.hibernate.format_sql: true
   flyway.locations: classpath:db/migration
-  ai:
-    ollama:
-      base-url: http://localhost:11434/
-      chat:
-        options:
-          model: qwen3:4b
-          temperature: 0.2
-          top-p: 0.9
-          max-tokens: 512
 
 ---
 spring:
