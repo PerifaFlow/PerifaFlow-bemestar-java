@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @RestControllerAdvice
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler {
         List<Map<String,String>> details = new ArrayList<>();
         for (FieldError fe : ex.getBindingResult().getFieldErrors()){
             String msg = fe.getDefaultMessage();
-            // se a mensagem vier como chave (ex: validation.turno), resolvemos no bundle
+            // Se a mensagem vier como chave (ex.: validation.turno), resolve do bundle:
             if (msg != null && msg.matches("[a-zA-Z0-9_.-]+")) {
                 msg = messageSource.getMessage(msg, null, msg, locale);
             }
@@ -47,6 +48,18 @@ public class GlobalExceptionHandler {
         ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         pd.setTitle(messageSource.getMessage("error.validation", null, locale));
         pd.setDetail(messageSource.getMessage("error.invalid_body", null, locale));
+        return pd;
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ProblemDetail handleDateParse(DateTimeParseException ex){
+        var locale = LocaleContextHolder.getLocale();
+        ProblemDetail pd = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        pd.setTitle(messageSource.getMessage("error.validation", null, locale));
+        String detailPt = "Parâmetro de data inválido. Formato esperado: yyyy-MM-dd.";
+        String detailEn = "Invalid date parameter. Expected format: yyyy-MM-dd.";
+        pd.setDetail(locale.getLanguage().equalsIgnoreCase("en") ? detailEn : detailPt);
         return pd;
     }
 
