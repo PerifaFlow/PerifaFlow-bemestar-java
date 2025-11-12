@@ -20,7 +20,6 @@
 		<java.version>17</java.version>
 	</properties>
 
-	<!-- Necessário para o Spring AI M3 -->
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>
@@ -30,20 +29,19 @@
 	</repositories>
 
 	<dependencies>
-		<!-- Observabilidade -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- Spring AI + Ollama -->
+		<!-- IA (Ollama local) -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
 			<version>1.0.0-M3</version>
 		</dependency>
 
-		<!-- Cache + Caffeine (coerente com application.yml) -->
+		<!-- Cache -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
@@ -54,7 +52,7 @@
 			<version>3.1.8</version>
 		</dependency>
 
-		<!-- JPA / Web / Segurança / Validação -->
+		<!-- Web / JPA / Security / Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -72,20 +70,20 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
-		<!-- Swagger/OpenAPI -->
+		<!-- Swagger -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.6.0</version>
 		</dependency>
 
-		<!-- Migrações -->
+		<!-- Migração -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
 
-		<!-- Drivers DB -->
+		<!-- Bancos -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
@@ -97,7 +95,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Utilidades -->
+		<!-- Util -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -142,9 +140,7 @@
 				<artifactId>git-commit-id-plugin</artifactId>
 				<version>4.9.10</version>
 				<executions>
-					<execution>
-						<goals><goal>revision</goal></goals>
-					</execution>
+					<execution><goals><goal>revision</goal></goals></execution>
 				</executions>
 			</plugin>
 
