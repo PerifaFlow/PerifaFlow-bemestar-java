@@ -21,7 +21,7 @@ import java.util.List;
 public class SugestoesService {
 
     private final ChatModel chatModel;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper; // <-- injeta via construtor
 
     public SugestaoMissaoResponse sugerir(SugestaoMissaoRequest req) {
         try {
@@ -45,7 +45,6 @@ public class SugestoesService {
                     String.valueOf(req.ultimaCondicao())
             );
 
-
             Prompt prompt = new Prompt(
                     List.<Message>of(
                             new SystemMessage("Responda em pt-BR."),
@@ -53,17 +52,14 @@ public class SugestoesService {
                     ),
                     OllamaOptions.create()
                             .withModel("qwen3:4b")
-                            .withTemperature(0.2)   // Double
-                            .withTopP(0.9)          // Double
+                            .withTemperature(0.2)
+                            .withTopP(0.9)
             );
 
             ChatResponse resp = chatModel.call(prompt);
             String content = resp.getResult().getOutput().getContent();
-            if (content == null || content.isBlank()) {
-                return fallback(req);
-            }
+            if (content == null || content.isBlank()) return fallback(req);
 
-            // Tolerância: pega só o JSON caso venha texto extra
             int i = content.indexOf('{'), j = content.lastIndexOf('}');
             if (i >= 0 && j > i) content = content.substring(i, j + 1);
 
