@@ -10,12 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class RitmoService {
     private final RitmoEventRepo repo;
 
     @Transactional
-    public void registrar(RitmoRegistroDTO dto){
+    public void registrar(RitmoRegistroDTO dto) {
         if (!dto.optIn()) return;
         RitmoEvent ev = RitmoEvent.builder()
                 .bairro(dto.bairro())
@@ -27,7 +28,6 @@ public class RitmoService {
         repo.save(ev);
     }
 
-    // NOVO: paginação e filtros opcionais
     @Transactional(readOnly = true)
     public Page<RitmoEvent> listar(String bairro, String turno, Pageable pageable) {
         String b = (bairro == null) ? "" : bairro;

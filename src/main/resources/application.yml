@@ -10,6 +10,15 @@ management:
       exposure:
         include: health,info
 
+springdoc:
+  paths-to-match: /v1/**
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+logging:
+  level:
+    org.springdoc: INFO
+
+# ===================== DEV =====================
 ---
 spring:
   config:
@@ -53,11 +62,25 @@ spring:
           top-p: 0.9
           max-tokens: 512
 
-springdoc:
-  paths-to-match: /v1/**
-  default-consumes-media-type: application/json
-  default-produces-media-type: application/json
+  # Evita falhar se fila não existir em dev (especialmente com mensageria off)
+  rabbitmq:
+    listener:
+      simple:
+        missing-queues-fatal: false
 
+# flag de mensageria (DEV: desligada por padrão)
+messaging:
+  enabled: false
+
+app:
+  mq:
+    ritmo:
+      exchange: bemestar.ritmo.exchange
+      queue: bemestar.ritmo.queue
+      routingKey: bemestar.ritmo.key
+
+
+# ===================== PROD =====================
 ---
 spring:
   config:
@@ -79,11 +102,27 @@ spring:
     caffeine:
       spec: maximumSize=1000,expireAfterWrite=5m
 
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USER:guest}
+    password: ${RABBIT_PASS:guest}
+    listener:
+      simple:
+        missing-queues-fatal: false
+
 springdoc:
   paths-to-match: /v1/**
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
 
-logging:
-  level:
-    org.springdoc: INFO
+# Em produção você decide por variável de ambiente
+messaging:
+  enabled: ${MESSAGING_ENABLED:false}
+
+app:
+  mq:
+    ritmo:
+      exchange: ${RITMO_EXCHANGE:bemestar.ritmo.exchange}
+      queue: ${RITMO_QUEUE:bemestar.ritmo.queue}
+      routingKey: ${RITMO_ROUTING_KEY:bemestar.ritmo.key}

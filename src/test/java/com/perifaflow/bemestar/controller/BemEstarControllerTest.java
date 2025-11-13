@@ -1,4 +1,4 @@
-package com.perifaflow.bemestar.service;
+package com.perifaflow.bemestar.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perifaflow.bemestar.api.BemEstarController;
@@ -16,10 +16,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
