@@ -12,9 +12,10 @@ import org.springframework.data.domain.PageRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@org.springframework.test.context.ActiveProfiles("test")
 @DataJpaTest
 @Import(RitmoService.class)
-class   RitmoServiceTest {
+class RitmoServiceTest {
 
     @Autowired
     RitmoService service;

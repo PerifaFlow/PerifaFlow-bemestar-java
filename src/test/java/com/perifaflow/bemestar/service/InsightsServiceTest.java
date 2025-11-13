@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@org.springframework.test.context.ActiveProfiles("test")
 @JdbcTest
 @Import(InsightsService.class)
 class InsightsServiceTest {
@@ -22,17 +23,18 @@ class InsightsServiceTest {
 
     @BeforeEach
     void setupSchema() {
+        jdbc.execute("DROP TABLE IF EXISTS RITMO_EVENT");
         jdbc.execute("""
-            CREATE TABLE RITMO_EVENT(
-                ID BIGINT AUTO_INCREMENT PRIMARY KEY,
-                BAIRRO VARCHAR(120) NOT NULL,
-                TURNO VARCHAR(16) NOT NULL,
-                ENERGIA INT NOT NULL,
-                AMBIENTE INT NOT NULL,
-                CONDICAO INT NOT NULL,
-                ENVIADO_EM TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """);
+        CREATE TABLE RITMO_EVENT(
+            ID BIGINT AUTO_INCREMENT PRIMARY KEY,
+            BAIRRO VARCHAR(120) NOT NULL,
+            TURNO VARCHAR(16) NOT NULL,
+            ENERGIA INT NOT NULL,
+            AMBIENTE INT NOT NULL,
+            CONDICAO INT NOT NULL,
+            ENVIADO_EM TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """);
         // 2 registros com AMBIENTE=2 (barulho alto) e 1 sem
         jdbc.update("INSERT INTO RITMO_EVENT (BAIRRO,TURNO,ENERGIA,AMBIENTE,CONDICAO) VALUES (?,?,?,?,?)",
                 "Vila Nova","MANHA",0,2,1);

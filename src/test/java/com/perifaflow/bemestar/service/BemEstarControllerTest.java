@@ -4,16 +4,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perifaflow.bemestar.api.BemEstarController;
 import com.perifaflow.bemestar.api.dto.SugestaoMissaoRequest;
 import com.perifaflow.bemestar.api.dto.SugestaoMissaoResponse;
+import com.perifaflow.bemestar.config.GlobalExceptionHandler;
+import com.perifaflow.bemestar.config.I18nConfig;
 import com.perifaflow.bemestar.service.InsightsService;
 import com.perifaflow.bemestar.service.RitmoService;
 import com.perifaflow.bemestar.service.SugestoesService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -24,8 +30,11 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@org.springframework.test.context.ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(BemEstarController.class)
-class BemEstarControllerTest {
+@Import({I18nConfig.class, GlobalExceptionHandler.class})
+class BemEstarControllerTest  {
 
     @Autowired
     MockMvc mvc;
@@ -69,7 +78,7 @@ class BemEstarControllerTest {
     @Test
     void GET_listarRegistros_ok() throws Exception {
         // devolve página vazia só para validar 200
-        given(ritmoService.listar(eq("Vila"), eq("NOITE"), any(PageRequest.class)))
+        given(ritmoService.listar(eq("Vila"), eq("NOITE"), any(Pageable.class)))
                 .willReturn(new PageImpl<>(List.of()));
 
         mvc.perform(get("/v1/ritmo/registros")
