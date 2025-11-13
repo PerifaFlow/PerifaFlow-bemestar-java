@@ -2,10 +2,12 @@ package com.perifaflow.bemestar.service;
 
 import com.perifaflow.bemestar.api.dto.RitmoRegistroDTO;
 import com.perifaflow.bemestar.domain.RitmoEvent;
+import com.perifaflow.bemestar.messaging.RitmoPublisher;
 import com.perifaflow.bemestar.repo.RitmoEventRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,9 @@ class RitmoServiceTest {
 
     @Autowired
     RitmoEventRepo repo;
+
+    @MockBean            // <-- adiciona este mock
+    RitmoPublisher publisher;
 
     @Test
     void deveRegistrarQuandoOptInTrue() {
