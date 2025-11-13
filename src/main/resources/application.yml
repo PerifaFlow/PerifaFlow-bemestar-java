@@ -14,6 +14,7 @@ springdoc:
   paths-to-match: /v1/**
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
+
 logging:
   level:
     org.springdoc: INFO
@@ -68,6 +69,12 @@ spring:
       simple:
         missing-queues-fatal: false
 
+# Desativa apenas o health check do Rabbit no dev (elimina o WARNING/conexão)
+management:
+  health:
+    rabbit:
+      enabled: false
+
 # flag de mensageria (DEV: desligada por padrão)
 messaging:
   enabled: false
@@ -78,7 +85,6 @@ app:
       exchange: bemestar.ritmo.exchange
       queue: bemestar.ritmo.queue
       routingKey: bemestar.ritmo.key
-
 
 # ===================== PROD =====================
 ---
