@@ -3,9 +3,8 @@ FROM maven:3.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
-# copia os arquivos do Maven
-COPY pom.xml .
-COPY src ./src
+# copia TODO o projeto, incluindo .git, para o container de build
+COPY . .
 
 # gera o jar (sem rodar testes pra ficar mais rápido)
 RUN mvn -U -DskipTests package
