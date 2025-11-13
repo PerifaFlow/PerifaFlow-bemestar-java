@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>PerifaFlow · Módulo Bem-Estar & Insights</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <style>
+        :root {
+            --bg: #050816;
+            --card-bg: #0b1020;
+            --accent: #f97316; /* laranja */
+            --accent-soft: rgba(249, 115, 22, 0.25);
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border: #1f2933;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #0f172a, #020617 60%);
+            color: var(--text-main);
+        }
+
+        .wrapper {
+            max-width: 960px;
+            width: 100%;
+            padding: 24px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(15,23,42,0.96), rgba(2,6,23,0.96));
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+            padding: 28px 28px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background:
+                    radial-gradient(circle at 0% 0%, var(--accent-soft), transparent 55%),
+                    radial-gradient(circle at 100% 0%, rgba(56,189,248,0.15), transparent 55%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15,23,42,0.7);
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,0.35);
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .tag-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 0 4px rgba(34,197,94,0.2);
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            max-width: 520px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+            gap: 20px;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .section-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .list {
+            list-style: none;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .list li {
+            margin-bottom: 6px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .list-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--accent);
+            margin-top: 6px;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0 4px;
+        }
+
+        .pill {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(15,23,42,0.8);
+            border: 1px solid rgba(148,163,184,0.4);
+            color: var(--text-muted);
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            border: 1px solid rgba(148,163,184,0.5);
+            background: rgba(15,23,42,0.85);
+            color: var(--text-main);
+            text-decoration: none;
+            transition: all 0.18s ease-out;
+        }
+
+        .btn-primary {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--accent), #fb923c);
+            color: #0b1020;
+            font-weight: 600;
+        }
+
+        .btn span.icon {
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            filter: brightness(1.03);
+        }
+
+        .footer {
+            margin-top: 18px;
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="card">
+        <div class="card-inner">
+            <div class="tag">
+                <span class="tag-dot"></span>
+                PerifaFlow · Módulo Bem-Estar &amp; Insights · Java
+            </div>
+
+            <h1>
+                Backend <span>online</span> 🎧
+            </h1>
+            <p class="subtitle">
+                Este serviço cuida do <strong>Ritmo</strong> (energia/ambiente/condição),
+                gera <strong>insights agregados</strong> por bairro &amp; período
+                e sugere <strong>missões adaptadas</strong> com IA generativa.
+            </p>
+
+            <div class="grid">
+                <div>
+                    <p class="section-title">Endpoints principais (v1)</p>
+                    <ul class="list">
+                        <li>
+                            <div class="list-bullet"></div>
+                            <div>
+                                <code>POST /v1/ritmo/registro</code><br/>
+                                Registrar Ritmo (opt-in, anônimo) com validação Bean Validation.
+                            </div>
+                        </li>
+                        <li>
+                            <div class="list-bullet"></div>
+                            <div>
+                                <code>GET /v1/ritmo/insights</code><br/>
+                                Agregados por bairro &amp; janela de datas, com cache em Caffeine.
+                            </div>
+                        </li>
+                        <li>
+                            <div class="list-bullet"></div>
+                            <div>
+                                <code>POST /v1/sugestoes/missao</code><br/>
+                                Sugestão de missão (CURTA / NORMAL · offline/online) via Spring AI.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="pill-row">
+                        <span class="pill">Java 17 · Spring Boot 3</span>
+                        <span class="pill">H2 / Oracle + JPA</span>
+                        <span class="pill">Spring Security · i18n</span>
+                        <span class="pill">RabbitMQ (eventos de Ritmo)</span>
+                        <span class="pill">Spring AI · Ollama</span>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="section-title">Acesso rápido</p>
+                    <div class="links">
+                        <a class="btn btn-primary" href="/swagger-ui.html">
+                            <span class="icon">📚</span>
+                            <span>Abrir Swagger (API Docs)</span>
+                        </a>
+                        <a class="btn" href="/actuator/health">
+                            <span class="icon">🩺</span>
+                            <span>Ver health check</span>
+                        </a>
+                    </div>
+
+                    <p style="font-size:12px;color:var(--text-muted);margin-top:14px;">
+                        Para chamar os endpoints via frontend/mobile, utilize a base URL desta
+                        página seguida de <code>/v1/...</code>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <span>Projeto acadêmico · FIAP — Java Advanced · Global Solution 2025</span>
+                <span><strong>PerifaFlow</strong> · bem-estar, trilhas e portfólio na periferia.</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
