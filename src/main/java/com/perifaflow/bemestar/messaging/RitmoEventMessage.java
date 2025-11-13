@@ -1,13 +1,17 @@
 package com.perifaflow.bemestar.messaging;
 
+import com.perifaflow.bemestar.domain.Turno;
+import lombok.*;
+
 import java.time.OffsetDateTime;
 
-public record RitmoEventMessage(
-        Long id,
-        String bairro,
-        String turno,
-        int energia,
-        int ambiente,
-        int condicao,
-        OffsetDateTime enviadoEm
-) {}
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+public class RitmoEventMessage {
+    private Long id;
+    private String bairro;
+    private Turno turno;
+    private Integer energia;
+    private Integer ambiente;
+    private Integer condicao;
+    private OffsetDateTime enviadoEm;
+}

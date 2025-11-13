@@ -3,6 +3,7 @@ package com.perifaflow.bemestar.service;
 import com.perifaflow.bemestar.api.dto.RitmoRegistroDTO;
 import com.perifaflow.bemestar.domain.RitmoEvent;
 import com.perifaflow.bemestar.domain.Turno;
+import com.perifaflow.bemestar.messaging.RitmoPublisher;
 import com.perifaflow.bemestar.repo.RitmoEventRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,9 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RitmoService {
     private final RitmoEventRepo repo;
+    private final RitmoPublisher publisher;
 
     @Transactional
-    public void registrar(RitmoRegistroDTO dto) {
+    public void registrar(RitmoRegistroDTO dto){
         if (!dto.optIn()) return;
         RitmoEvent ev = RitmoEvent.builder()
                 .bairro(dto.bairro())
@@ -25,7 +27,9 @@ public class RitmoService {
                 .ambiente(dto.ambiente())
                 .condicao(dto.condicao())
                 .build();
-        repo.save(ev);
+
+        ev = repo.save(ev);
+        publisher.publish(ev);
     }
 
     @Transactional(readOnly = true)

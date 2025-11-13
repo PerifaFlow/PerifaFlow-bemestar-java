@@ -1,15 +1,16 @@
 package com.perifaflow.bemestar.messaging;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.perifaflow.bemestar.domain.RitmoEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
-@ConditionalOnProperty(value = "messaging.enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(prefix="messaging", name="enabled", havingValue="false", matchIfMissing = true)
 public class NoopRitmoPublisher implements RitmoPublisher {
-    private static final Logger log = LoggerFactory.getLogger(NoopRitmoPublisher.class);
-    @Override public void publish(RitmoEventMessage message) {
-        log.debug("[NOOP] Mensageria desabilitada. Evento ignorado: {}", message);
+    @Override
+    public void publish(RitmoEvent event) {
+        log.debug("[NOOP] Mensageria desabilitada. Evento não publicado (id={})", event.getId());
     }
 }

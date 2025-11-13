@@ -1,28 +1,34 @@
 package com.perifaflow.bemestar.messaging;
 
+import com.perifaflow.bemestar.domain.RitmoEvent;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(value = "messaging.enabled", havingValue = "true")
+@RequiredArgsConstructor
+@ConditionalOnProperty(prefix="messaging", name="enabled", havingValue="true")
 public class RabbitRitmoPublisher implements RitmoPublisher {
-    private final RabbitTemplate template;
-    private final String exchange;
-    private final String routingKey;
 
-    public RabbitRitmoPublisher(
-            RabbitTemplate template,
-            @Value("${app.mq.ritmo.exchange}") String exchange,
-            @Value("${app.mq.ritmo.routingKey}") String routingKey) {
-        this.template = template;
-        this.exchange = exchange;
-        this.routingKey = routingKey;
-    }
+    private final RabbitTemplate rabbitTemplate;
+
+    @Value("${app.mq.ritmo.exchange}")   private String exchange;
+    @Value("${app.mq.ritmo.routingKey}") private String routingKey;
 
     @Override
-    public void publish(RitmoEventMessage message) {
-        template.convertAndSend(exchange, routingKey, message);
+    public void publish(RitmoEvent ev) {
+        RitmoEventMessage msg = RitmoEventMessage.builder()
+                .id(ev.getId())
+                .bairro(ev.getBairro())
+                .turno(ev.getTurno())
+                .energia(ev.getEnergia())
+                .ambiente(ev.getAmbiente())
+                .condicao(ev.getCondicao())
+                .enviadoEm(ev.getEnviadoEm())
+                .build();
+
+        rabbitTemplate.convertAndSend(exchange, routingKey, msg);
     }
 }
